@@ -1,5 +1,4 @@
-module ApplicationHelper
-	#returns full title on a per page basis
+#returns full title on a per page basis
 	def full_title(page)
 		base_title = "pomos - pomodoro timer"
 		if page.empty?
@@ -8,4 +7,3 @@ module ApplicationHelper
 			"#{base_title} | #{page}"
 		end
 	end
-end
