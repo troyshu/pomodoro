@@ -1,10 +1,46 @@
-<h2>
-    Welcome to pomos, the pomodoro timer
- </h2>
- 
-<div class="center hero-unit">
+<script>
+//timer code
+$(document).ready(function()
+ {
 
-  
+	$('#timer').countdown({until: nextTime,  
+    onExpiry: timerDone, onTick: watchCountdown}); 
+ 	
+ 	var nextTime = null;
+	
+	$('#start').click(function() { 
+	    nextTime = new Date(); 
+	    nextTime.setSeconds(nextTime.getSeconds() + 5.5); 
+	    $('#timer').countdown('option', {until: nextTime}); 
+	}); 
+	 
+	function timerDone() { 
+	    alert('We have lift off!'); 
+	} 
+	 
+	function watchCountdown(periods) { 
 
-  
+	}
+
+});
+
+</script>
+
+<div id="main">
+
+	<h2>
+	    Welcome to pomos, the pomodoro timer
+	 </h2>
+	 
+
+	<div id = "timer-wrapper" class="center">
+
+			<div id="timer" class="well span4 offset2">
+			</div>
+
+		  	<button type="button" id="start" class="btn btn-success btn-large span2">Start</button>
+
+	</div>
+
 </div>
+

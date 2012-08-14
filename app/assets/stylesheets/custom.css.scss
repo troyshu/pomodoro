@@ -14,6 +14,7 @@ html {
 
 body {
   padding-top: 60px;
+
 }
 
 section {
@@ -29,6 +30,13 @@ textarea {
   h1 {
     margin-bottom: 10px;
   }
+}
+
+/* home */
+
+#main {
+  padding-top: 50px;
+  padding-bottom:100px;
 }
 
 /* typography */
@@ -80,6 +88,7 @@ p {
 /* footer */
 
 footer {
+  clear: both;
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $grayMediumLight;
@@ -101,4 +110,9 @@ footer {
       margin-left: 10px;
     }
   }
+}
+
+/* timer */
+#start {
+  font-size: 300%;
 }
