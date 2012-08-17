@@ -1,12 +1,12 @@
 <header class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<%= link_to "pomos", "#", id:"logo"%>
+			<%= link_to "pomos", root_path, id:"logo"%>
 			<nav>
 				<ul class="nav pull-right">
-					<li><%= link_to "Home", '#' %></li>
-					<li><%= link_to "Blog", '#' %></li>
-					<li><%= link_to "Help", '#' %></li>
+					<li><%= link_to "Home", root_path %></li>
+					<li><%= link_to "Blog", 'http://pomos-blog.posterous.com/', :target => '_blank' %></li>
+					<li><%= link_to "Help", help_path %></li>
 
 				</ul>
 			</nav>

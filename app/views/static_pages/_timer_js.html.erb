@@ -16,8 +16,8 @@ $(document).ready(function()
 
 	var nextTime = null;
 
-	//debug: TO REMOVE IN PRODUCTION
-	var debug = 1;
+	//debug
+	var debug = <%= Rails.env.development?.object_id / 2 %>;
 	if (debug==1) {
 		console.log('DEBUG SETTINGS SET.');
 		TO_MINUTES = 1;
