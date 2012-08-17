@@ -37,6 +37,7 @@ $(document).ready(function()
 	var alarm;
 	if($.sound.support) {
 	  alarm = $.sound.load('/sounds/alarm-clock-cut');
+	  bell = $.sound.load('/sounds/bike-bell');
 	}
  	
  	
@@ -77,6 +78,9 @@ $(document).ready(function()
 
 	    } 
 	    else if (timeBlock==BREAK_TIME) {
+
+	    	bell.play(); 
+
 	    	alert('Back to work!');
 	    	newWorkBlock();
 	    	setStatus("Ready to start working", "");
@@ -132,7 +136,7 @@ $(document).ready(function()
 	//status helpers
 	function setStatus(message, type) {
 		$('#status').html(message);
-		$('#status').prop('class', 'label label-'+type+' span2 offset2');
+		$('#status').prop('class', 'label label-'+type+' span2');
 	}
 
 	
