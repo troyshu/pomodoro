@@ -176,7 +176,7 @@ DEPENDENCIES
   database_cleaner (= 0.7.0)
   factory_girl_rails (= 1.4.0)
   faker (= 1.0.1)
-  jquery-rails (= 2.0.0)
+  jquery-rails
   pg (= 0.12.2)
   rails
   rspec-rails (= 2.10.0)
