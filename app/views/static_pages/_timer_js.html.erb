@@ -1,0 +1,144 @@
+<script>
+//timer code
+$(document).ready(function()
+ {
+	//time block intervals
+	var WORK_TIME = 25;
+	var BREAK_TIME = 5;
+	
+	//timer modes
+	var WORK_READY = 1;
+	var WORKING = 2;
+	var ON_BREAK = 3;
+	
+	//minute multiplication factor
+	var TO_MINUTES = 60;
+
+	var nextTime = null;
+
+	//debug: TO REMOVE IN PRODUCTION
+	var debug = 1;
+	if (debug==1) {
+		console.log('DEBUG SETTINGS SET.');
+		TO_MINUTES = 1;
+		WORK_TIME = 2;
+		BREAK_TIME = 1;
+	}
+	
+	var timeBlock = WORK_TIME;
+	var timerMode = WORK_READY;
+
+	//initialize timer
+	$('#timer').countdown({until: +timeBlock*TO_MINUTES,  
+	    onExpiry: timerDone, onTick: watchCountdown});
+	$('#timer').countdown('pause');
+    
+    //sound helper
+	var alarm;
+	if($.sound.support) {
+	  alarm = $.sound.load('/sounds/alarm-clock-cut');
+	}
+ 	
+ 	
+	
+	$('#timerButton').click(function() { 
+		
+		//if in break block, reset
+		if (timerMode==ON_BREAK) {
+			newWorkBlock();
+			setStatus("Ready to start working", "");
+		}
+		//if in work block and timer is not running, start
+		else if (timerMode==WORK_READY) {
+			$('#timer').countdown('resume');
+
+			toResetButton();
+
+			timerMode = WORKING;
+			setStatus("Working", "info");
+		}
+		//if in work block and timer is running, reset
+		else if (timerMode==WORKING) {
+			newWorkBlock();
+			setStatus("Ready to start working", "");
+		}
+
+	   
+	}); 
+	 
+	function timerDone() { 
+	    if (timeBlock==WORK_TIME) {
+	    	
+			alarm.play();
+
+	    	alert('Break time!');
+	    	newBreakBlock();
+	    	setStatus("On break", "warning");
+
+	    } 
+	    else if (timeBlock==BREAK_TIME) {
+	    	alert('Back to work!');
+	    	newWorkBlock();
+	    	setStatus("Ready to start working", "");
+	    }
+	} 
+	 
+	function watchCountdown(periods) { 
+
+	}
+
+	//timer helpers
+	function newWorkBlock() {
+		timeBlock = WORK_TIME;
+		timerMode = WORK_READY;
+		//reset timer
+		resetTimer(timeBlock);
+		//change button
+		toStartButton();
+
+	}
+	function newBreakBlock() {
+		timeBlock=BREAK_TIME;
+		timerMode = ON_BREAK;
+		//reset timer
+		resetTimer(timeBlock);
+		//change button
+		toResetButton();
+
+		//automatically start break
+		$('#timer').countdown('resume');
+
+		
+	}
+	function resetTimer(startTime) {
+
+		if (debug==1) console.log('DEBUG: resetting timer. adding '+startTime+' seconds'); 
+
+		//reset the timer, then pause it
+		$('#timer').countdown('option', {until:+startTime*TO_MINUTES}); 
+	    $('#timer').countdown('pause');
+	}
+
+	//button helpers
+	function toResetButton() {
+		$("#timerButton").prop('class', 'btn btn-danger btn-large span2');
+		$("#timerButton").html('Reset');
+	}
+	function toStartButton() {
+		$("#timerButton").prop('class', 'btn btn-success btn-large span2');
+		$("#timerButton").html('Start');
+	}
+
+	//status helpers
+	function setStatus(message, type) {
+		$('#status').html(message);
+		$('#status').prop('class', 'label label-'+type+' span2 offset2');
+	}
+
+	
+
+	
+
+});
+
+</script>

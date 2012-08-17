@@ -1,30 +1,5 @@
-<script>
-//timer code
-$(document).ready(function()
- {
 
-	$('#timer').countdown({until: nextTime,  
-    onExpiry: timerDone, onTick: watchCountdown}); 
- 	
- 	var nextTime = null;
-	
-	$('#start').click(function() { 
-	    nextTime = new Date(); 
-	    nextTime.setSeconds(nextTime.getSeconds() + 5.5); 
-	    $('#timer').countdown('option', {until: nextTime}); 
-	}); 
-	 
-	function timerDone() { 
-	    alert('We have lift off!'); 
-	} 
-	 
-	function watchCountdown(periods) { 
-
-	}
-
-});
-
-</script>
+<%= render 'static_pages/timer_js' %> 
 
 <div id="main">
 
@@ -32,13 +7,20 @@ $(document).ready(function()
 	    Welcome to pomos, the pomodoro timer
 	 </h2>
 	 
+	 <span id="sound"></span>
 
 	<div id = "timer-wrapper" class="center">
 
+		<div class="row">
 			<div id="timer" class="well span4 offset2">
 			</div>
 
-		  	<button type="button" id="start" class="btn btn-success btn-large span2">Start</button>
+		  	<button type="button" id="timerButton" class="btn btn-success btn-large span2">Start</button>
+		</div>
+		<div class="row">
+			<span id="status" class="label label span2 offset2">Ready to start working</span>
+		</div>
+
 
 	</div>
 
