@@ -5,7 +5,7 @@ PomodoroApp::Application.routes.draw do
 
   match '/signup',  to: 'users#new'
   match '/help', to: 'static_pages#help'
-  match '/contact' to: 'static_pages#contact'
+  match '/contact', to: 'static_pages#contact'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
