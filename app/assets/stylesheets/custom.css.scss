@@ -199,3 +199,10 @@ input, textarea, select, .uneditable-input {
   margin-top: 45px;
   @include box_sizing;
 }
+
+/* tag box */
+.tags-box {
+  width:500px;
+  margin-left: 20px;
+}
+.defaultTextActive { color: #a1a1a1; font-style: italic; }

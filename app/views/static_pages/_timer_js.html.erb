@@ -18,6 +18,7 @@ $(document).ready(function()
 
 	//debug
 	var debug = <%= Rails.env.development?.object_id / 2 %>;
+	debug = 0;
 	if (debug==1) {
 		console.log('DEBUG SETTINGS SET.');
 		TO_MINUTES = 1;
@@ -40,6 +41,26 @@ $(document).ready(function()
 	  bell = $.sound.load('/sounds/bike-bell');
 	}
  	
+	//clear default text helpers
+	$(".defaultText").focus(function(srcc)
+    {
+        if ($(this).val() == $(this)[0].title)
+        {
+            $(this).removeClass("defaultTextActive");
+            $(this).val("");
+        }
+    });
+    
+    $(".defaultText").blur(function()
+    {
+        if ($(this).val() == "")
+        {
+            $(this).addClass("defaultTextActive");
+            $(this).val($(this)[0].title);
+        }
+    });
+    
+    $(".defaultText").blur();        
  	
 	
 	$('#timerButton').click(function() { 
