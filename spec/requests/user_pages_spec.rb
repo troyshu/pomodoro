@@ -46,9 +46,57 @@ describe "User pages" do
 
   describe "profile page" do
   	let(:user) { FactoryGirl.create(:user) }
+	let!(:p1) { FactoryGirl.create(:finished_pomodoro, user:user, created_at: 1.day.ago) }
+	let!(:p2) { FactoryGirl.create(:pomodoro, user:user, created_at: 1.minute.ago) }
+	let!(:p3) { FactoryGirl.create(:finished_pomodoro, user:user, created_at: 1.hour.ago) }
+
 	before { visit user_path(user) }
 
 	it { should have_selector('h1', text:user.name) }
 	it { should have_selector('title', text:user.name) }
+
+	describe "pomodoros should not include unfinished pomodoros" do
+		it { should have_content("#{p1.length} minutes") }
+		it { should have_content("#{p3.length} minutes") }
+		it { should_not have_content("#{p2.length} minutes") }
+	end
   end
+
+  describe "edit" do
+    let(:user) { FactoryGirl.create(:user) }
+    before { visit edit_user_path(user) }
+
+
+    describe "page" do
+      it { should have_selector('h1',    text: "Update your profile") }
+      it { should have_selector('title', text: "Edit user") }
+      it { should have_link('change', href: 'http://gravatar.com/emails') }
+    end
+
+    describe "with invalid information" do
+      before { click_button "Save changes" }
+
+      it { should have_content('error') }
+    end
+
+    describe "with valid information" do
+      let(:new_name)  { "New Name" }
+      let(:new_email) { "new@example.com" }
+      before do
+        fill_in "Name",             with: new_name
+        fill_in "Email",            with: new_email
+        fill_in "Password",         with: user.password
+        fill_in "Confirm Password", with: user.password
+        click_button "Save changes"
+      end
+
+      it { should have_selector('title', text: new_name) }
+      it { should have_selector('div.alert.alert-success') }
+      it { should have_link('Sign out', href: signout_path) }
+      specify { user.reload.name.should  == new_name }
+      specify { user.reload.email.should == new_email }
+    end
+
+  end
+
 end

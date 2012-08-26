@@ -206,3 +206,31 @@ input, textarea, select, .uneditable-input {
   margin-left: 20px;
 }
 .defaultTextActive { color: #a1a1a1; font-style: italic; }
+
+/* pomodoros */
+
+.pomodoros {
+  list-style: none;
+  margin: 10px 0 0 0;
+
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+  }
+}
+.length {
+  display: block;
+}
+.updated-at {
+  color: $grayLight;
+}
+.gravatar {
+  float: left;
+  margin-right: 10px;
+}
+aside {
+  textarea {
+    height: 100px;
+    margin-bottom: 5px;
+  }
+}

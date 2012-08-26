@@ -1,0 +1,9 @@
+<% if pomodoro.length > 0 %>
+<li>
+  <span class="length"><%= pomodoro.length %> minutes</span>
+
+  <span class="updated-at">
+    Finished <%= time_ago_in_words(pomodoro.updated_at) %> ago.
+  </span>
+</li>
+<% end %>

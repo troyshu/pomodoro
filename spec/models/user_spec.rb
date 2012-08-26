@@ -30,6 +30,9 @@ describe User do
 
 	it { should respond_to(:remember_token) }
 
+	#pomodoros
+	it { should respond_to(:pomodoros) }
+
 	it { should be_valid }
 	
 	#user name tests
@@ -119,5 +122,28 @@ describe User do
 	describe "remember token" do
 		before { @user.save }
 		its(:remember_token) { should_not be_blank }
+	end
+
+	#pomodoro associations
+	describe "pomodoro associations" do
+		before { @user.save }
+		let!(:older_pomodoro) do
+			FactoryGirl.create(:pomodoro, user: @user, created_at: 1.day.ago)
+		end
+		let!(:newer_pomodoro) do
+			FactoryGirl.create(:pomodoro, user: @user, created_at: 1.hour.ago)
+		end
+
+		it "should have the pomodoros (both finished and unfinished) in the right order" do
+			@user.pomodoros.should == [newer_pomodoro, older_pomodoro]
+		end
+
+		it "should destroy associated pomodoros once user is destroyed" do
+			pomodoros = @user.pomodoros
+			@user.destroy
+			pomodoros.each do |pomodoro|
+				Pomodoro.find_by_id(pomodoro.id).should be_nil
+			end
+		end
 	end
 end
