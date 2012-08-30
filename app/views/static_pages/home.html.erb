@@ -3,9 +3,13 @@
 
 <div id="main">
 	
+	<% if not signed_in? %>
 	  <h2>
-	    Welcome to pomos, the pomodoro timer
+	    Welcome to Pomos, the Pomodoro timer
+
+	     <%= button_to "Sign up to start tracking your Pomodoros", signup_path, :class => "btn btn-primary btn-large" %>
 	  </h2>
+	<% end %>
 
 	 
 	 

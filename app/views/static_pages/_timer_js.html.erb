@@ -18,7 +18,7 @@ $(document).ready(function()
 
 	//debug
 	var debug = <%= Rails.env.development?.object_id / 2 %>;
-	debug = 0;
+	//debug = 0;
 	if (debug==1) {
 		console.log('DEBUG SETTINGS SET.');
 		TO_MINUTES = 1;
@@ -62,7 +62,8 @@ $(document).ready(function()
     
     $(".defaultText").blur();        
  	
-	
+
+	var pomodoro_id='';
 	$('#timerButton').click(function() { 
 		
 		//if in break block, reset
@@ -78,7 +79,25 @@ $(document).ready(function()
 
 			timerMode = WORKING;
 			setStatus("Working", "info");
+
+			//lastly, create pomodoro data object
+			
+
+			$.ajax({
+			  type    : 'POST',
+			  url     : "/pomodoros/create/", 
+			  data    : { },
+			  success : function(data) {
+			              var not_signed_in = data.indexOf("Please sign in") != -1;
+			              //console.log(not_signed_in);
+			              if (!not_signed_in) {
+							pomodoro_id = data;
+							//console.log(pomodoro_id);
+			              }         
+			            },  
+			});
 		}
+
 		//if in work block and timer is running, reset
 		else if (timerMode==WORKING) {
 			newWorkBlock();
@@ -93,9 +112,21 @@ $(document).ready(function()
 	    	
 			alarm.play();
 
-	    	alert('Break time!');
+	    	//alert('Break time!');
 	    	newBreakBlock();
 	    	setStatus("On break", "warning");
+
+	    	if (pomodoro_id != '') {
+	    		//there exists a pomodoro to be marked "done". so do so
+	    		$.ajax({
+				  type    : 'POST',
+				  url     : "/pomodoros/update/", 
+				  data    : { pomodoro_id: pomodoro_id, length: WORK_TIME},
+				  success : function(data) {
+				              //console.log(data);         
+				            },  
+				});
+	    	}
 
 	    } 
 	    else if (timeBlock==BREAK_TIME) {

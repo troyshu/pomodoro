@@ -1,21 +1,88 @@
 <% provide(:title, @user.name) %>
+
+<% content_for :pomodoro_charts do %>
+  <!--google charts api-->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>  
+
+  <% if @user.pomodoros.finished.any? %>
+    <%= render 'users/show_user_charts' %> 
+  <% end %>
+
+<% end %>
+
 <div class="row">
-  <aside class="span4">
+  <aside class="span3">
     <section>
       <h1>
         <%= gravatar_for @user %>
         <%= @user.name %>
       </h1>
     </section>
+
+    <section>
+      <% if @user.pomodoros.finished.any? %>
+        <h3>Recent Pomodoros</h3>
+        <ol class="pomodoros">
+          <%= render @pomodoros.first(10) %>
+        </ol>
+        
+      <% end %>
+    </section>
+
   </aside>
 
-  <div class="span8">
-    <% if @user.pomodoros.any? %>
-      <h3>Pomodoros (<%= @user.pomodoros.count %>)</h3>
+<div id="chart-options-upper">
+
+  <div id="chart-timeframe-div" class="pull-right">
+    Timeframe: 
+    <input type="radio" name="chart-timeframe" value="last week" onclick="redrawChart();" > Last Week | 
+    <input type="radio" name="chart-timeframe" value="last month" onclick="redrawChart();" checked> Last Month |
+    <input type="radio" name="chart-timeframe" value="last year" onclick="redrawChart();"> Last Year
+  </div>
+</div>
+
+<div id="chart-div-wrapper" class="span9">
+
+  <div id="chart_div" class="">
+    <% if not @user.pomodoros.finished.any? %>
+      You don't have any Pomodoros! <%= link_to "Start working on some Pomodoros", root_path %> to see the Pomodoro history chart.
+    <% end %>
+  </div>
+
+  <div id="chart-options-lower">
+
+    <div id="chart-type-div" class="pull-left">
+      <input type="radio" name="chart-type" value="total time" onclick="redrawChart();" checked> Minutes | 
+      <input type="radio" name="chart-type" value="count" onclick="redrawChart();"> Count
+    </div>
+
+    <div id="chart-granularity-div" class="pull-right">
+      <input type="radio" name="chart-granularity" value="daily" onclick="redrawChart();" checked> Daily | 
+        <input type="radio" name="chart-granularity" value="weekly" onclick="redrawChart();"> Weekly
+    </div>
+
+  </div>
+
+  <div id="table_div" class="">
+  </div>
+
+</div>
+
+
+
+
+  
+
+<!--
+  <div class="span2 pull-right">
+    <% if @user.pomodoros.finished.any? %>
+      <h3>Pomodoros (<%= @user.pomodoros.finished.count %>)</h3>
       <ol class="pomodoros">
         <%= render @pomodoros %>
       </ol>
       <%= will_paginate @pomodoros %>
     <% end %>
   </div>
+-->
+
 </div>

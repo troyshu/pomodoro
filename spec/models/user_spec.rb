@@ -128,13 +128,13 @@ describe User do
 	describe "pomodoro associations" do
 		before { @user.save }
 		let!(:older_pomodoro) do
-			FactoryGirl.create(:pomodoro, user: @user, created_at: 1.day.ago)
+			FactoryGirl.create(:finished_pomodoro, user: @user, created_at: 1.day.ago)
 		end
 		let!(:newer_pomodoro) do
-			FactoryGirl.create(:pomodoro, user: @user, created_at: 1.hour.ago)
+			FactoryGirl.create(:finished_pomodoro, user: @user, created_at: 1.hour.ago)
 		end
 
-		it "should have the pomodoros (both finished and unfinished) in the right order" do
+		it "should have the pomodoros in the right order (ignoring unfinished ones)" do
 			@user.pomodoros.should == [newer_pomodoro, older_pomodoro]
 		end
 

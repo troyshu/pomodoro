@@ -1,7 +1,7 @@
 PomodoroApp::Application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  resources :pomodoros, only: [:create, :destroy]
+  resources :pomodoros, only: [:create, :destroy, :update]
 
   root to: "static_pages#home"
 
@@ -11,6 +11,10 @@ PomodoroApp::Application.routes.draw do
 
   match '/help', to: 'static_pages#help'
   match '/contact', to: 'static_pages#contact'
+
+  match '/pomodoros/create', to: 'pomodoros#create'
+  match '/pomodoros/update', to: 'pomodoros#update'
+  match '/users/get_data', to: 'users#get_data'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

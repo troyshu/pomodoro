@@ -173,7 +173,7 @@ input, textarea, select, .uneditable-input {
 
 /* timer */
 #timer-wrapper {
-  margin-top: 100px;
+  margin-top: 50px;
   width:500px;
   margin-left: auto;
   margin-right: auto;
@@ -207,22 +207,24 @@ input, textarea, select, .uneditable-input {
 }
 .defaultTextActive { color: #a1a1a1; font-style: italic; }
 
-/* pomodoros */
+/* pomodoros list */
 
 .pomodoros {
   list-style: none;
   margin: 10px 0 0 0;
 
   li {
-    padding: 10px 0;
+    padding: 5px 0;
     border-top: 1px solid #e8e8e8;
   }
 }
 .length {
   display: block;
+  font-size:12px;
 }
 .updated-at {
   color: $grayLight;
+  font-size:10px;
 }
 .gravatar {
   float: left;
@@ -233,4 +235,43 @@ aside {
     height: 100px;
     margin-bottom: 5px;
   }
+}
+
+/* user profile pomodoro graph */
+#chart_div {
+  //border: 1px dashed #cccccc;
+  width:700px;
+  height:500px;
+}
+
+#chart-options-lower {
+
+}
+
+#chart-type-div {
+
+
+}
+
+#chart-granularity-div {
+
+}
+
+/*sign up button*/
+.btn-primary {
+  margin-top:20px;
+}
+
+/* pricing table */
+.pricingtable {
+  width: 250px; height: 450px;
+  background: #fff;
+  margin: 50px;
+ 
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 9px rgba(0,0,0,0.3);
+     -moz-box-shadow: 2px 2px 9px rgba(0,0,0,0.3);
+          box-shadow: 2px 2px 9px rgba(0,0,0,0.3);
 }

@@ -12,7 +12,7 @@ module SessionsHelper
 		# we don't want just @current_user. local vars only stored for current page, so it will dissappear as soon as we navigate somewhere else
 		@current_user ||= User.find_by_remember_token(cookies[:remember_token])
 	end
-	
+
 	def signed_in_user
 	    unless signed_in?
 	      store_location
@@ -34,11 +34,11 @@ module SessionsHelper
 	def redirect_back_or(default)
 	    redirect_to(session[:return_to] || default)
 	    session.delete(:return_to)
-	  end
+	end
 
-	  def store_location
-	    session[:return_to] = request.url
-	  end
+	def store_location
+		session[:return_to] = request.url.sub("pomodoros/create", "")
+	end
 	
 
 	

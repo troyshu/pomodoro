@@ -46,20 +46,20 @@ describe "User pages" do
 
   describe "profile page" do
   	let(:user) { FactoryGirl.create(:user) }
-	let!(:p1) { FactoryGirl.create(:finished_pomodoro, user:user, created_at: 1.day.ago) }
-	let!(:p2) { FactoryGirl.create(:pomodoro, user:user, created_at: 1.minute.ago) }
-	let!(:p3) { FactoryGirl.create(:finished_pomodoro, user:user, created_at: 1.hour.ago) }
+  	let!(:p1) { FactoryGirl.create(:finished_pomodoro, user:user, created_at: 1.day.ago) }
+  	let!(:p2) { FactoryGirl.create(:pomodoro, user:user, created_at: 1.minute.ago) }
+  	let!(:p3) { FactoryGirl.create(:finished_pomodoro, user:user, created_at: 1.hour.ago) }
 
-	before { visit user_path(user) }
+  	before { visit user_path(user) }
 
-	it { should have_selector('h1', text:user.name) }
-	it { should have_selector('title', text:user.name) }
+  	it { should have_selector('h1', text:user.name) }
+  	it { should have_selector('title', text:user.name) }
 
-	describe "pomodoros should not include unfinished pomodoros" do
-		it { should have_content("#{p1.length} minutes") }
-		it { should have_content("#{p3.length} minutes") }
-		it { should_not have_content("#{p2.length} minutes") }
-	end
+  	describe "pomodoros should not include unfinished pomodoros" do
+  		it { should have_content("#{p1.length} minutes") }
+  		it { should have_content("#{p3.length} minutes") }
+  		it { should_not have_content("#{p2.length} minutes") }
+  	end
   end
 
   describe "edit" do

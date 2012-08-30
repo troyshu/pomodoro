@@ -1,0 +1,89 @@
+<script>
+
+
+var data_toGraph = ''
+
+//chart defaults
+var granularity = "daily"
+var type = "total time"
+var timeframe = "last month"
+
+$.ajax({
+  type    : 'POST',
+  url     : "/users/get_data/", 
+  async   : false,
+  data    : { granularity: granularity, type: type, timeframe: timeframe},
+  success : function(data) {
+              data_toGraph = JSON.parse(data);   
+              //console.log(data_toGraph);
+            },  
+});   
+
+
+
+google.load("visualization", "1", {packages:["corechart"]});
+google.load('visualization', '1.0', {'packages':['table']});
+//console.log("data to graph:"+data_toGraph);
+
+google.setOnLoadCallback(function(){ drawChart(data_toGraph) });
+//google.setOnLoadCallback(function(){ drawTable(data_toGraph) });
+
+
+function drawChart(data_toGraph) {
+
+  var data = google.visualization.arrayToDataTable(data_toGraph);
+
+  var options = {
+    title: 'Pomodoro history',
+    chartArea: {top:30, width:"65%",height:"70%"},
+    hAxis: {title: 'Date', titleTextStyle: {color: 'red'}},
+    height:500
+  };
+
+  //draw chart
+  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+  
+}
+
+function drawTable(data_toGraph) {
+
+  var data = google.visualization.arrayToDataTable(data_toGraph);
+
+
+  //draw chart
+  var table = new google.visualization.Table(document.getElementById('table_div'));
+  table.draw(data);
+  
+}
+  
+
+//tester method: ajax chart updating
+function redrawChart() {
+  var new_data_toGraph = '';
+
+  //get chart options from DOM
+  type = $('input[name=chart-type]:radio:checked').val();
+  granularity = $('input[name=chart-granularity]:radio:checked').val();
+  timeframe = $('input[name=chart-timeframe]:radio:checked').val();;
+
+  //console.log(type);
+  //console.log(granularity);
+
+  $.ajax({
+    type    : 'POST',
+    url     : "/users/get_data/", 
+    async   : false,
+    data    : { granularity: granularity, type: type, timeframe: timeframe},
+    success : function(data) {
+                //console.log(data);
+                new_data_toGraph = JSON.parse(data);   
+                //console.log(data_toGraph);
+              },  
+  });
+
+  drawChart(new_data_toGraph);
+  //drawTable(new_data_toGraph);
+
+}
+</script>
