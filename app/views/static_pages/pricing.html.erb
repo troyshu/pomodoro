@@ -1,3 +1,57 @@
-<div class="pricingtable"
-	
+<% provide(:title, 'Pricing') %>
+
+<script type='text/javascript'>
+  $(function() {
+    
+    $('#pomodoro-tagging-tooltip').tipsy({gravity: 'w', fade: true, delayOut: 1000, offset:30});
+    
+    
+    
+  });
+</script>
+
+<div id="container">
+	<div class="pricingtable">
+		<div class="top">
+			<h2>Starter</h2>
+		</div>
+		<ul>
+			<li><strong>Full</strong> Email Support</li>
+			<li><strong>100</strong> Pomodoros of <br>history</li>
+			<li>&nbsp</li>
+			<li>&nbsp</li>
+			<li>&nbsp</li>
+		</ul>
+
+		<hr />
+
+		<h1 class="normal">Free</h1>
+		<p>&nbsp</p>
+		
+
+		 <%= link_to "Sign Up", signup_path, class: "signup-button" %>
+	</div>
+
+	<div class="pricingtable featured">
+		<div class="top">
+			<h2>Premium</h2>
+		</div>
+
+		<ul>
+			<li><strong>Full</strong> Email Support</li>
+			<li><strong>Unlimited</strong> Pomodoro history</li>
+			<li><strong>Free</strong> data export</li>
+
+			<li><strong><a title="Tag your Pomodoros with descriptive words such as 'research paper' or 'math homework', and see how much you've spent your time on what!" class="atooltip" id="pomodoro-tagging-tooltip">Pomodoro tagging</a></strong></li>
+
+			<li><strong>Any other features we release in the future</strong></li>
+		</ul>
+
+		<hr />
+
+		<h1><sup>$</sup>3.99</h1>
+		<p>per month</p>
+
+		 <a href="#" class="signup-button" onclick="TINY.box.show({url:'notready.html',width:300,height:150})">Sign Up</a>
+	</div>
 </div>
