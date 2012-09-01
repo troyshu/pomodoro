@@ -31,6 +31,7 @@
 
   </aside>
 
+<% if @user.pomodoros.finished.any? %>
 <div id="chart-options-upper">
 
   <div id="chart-timeframe-div" class="pull-right">
@@ -40,6 +41,7 @@
     <input type="radio" name="chart-timeframe" value="last year" onclick="redrawChart();"> Last Year
   </div>
 </div>
+<% end %>
 
 <div id="chart-div-wrapper" class="span9">
 
@@ -49,6 +51,7 @@
     <% end %>
   </div>
 
+<% if @user.pomodoros.finished.any? %>
   <div id="chart-options-lower">
 
     <div id="chart-type-div" class="pull-left">
@@ -63,8 +66,10 @@
 
   </div>
 
+
   <div id="table_div" class="">
   </div>
+<% end %>
 
 </div>
 
