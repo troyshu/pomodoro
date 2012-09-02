@@ -1,18 +1,19 @@
 <script>
 
 
-var data_toGraph = ''
+var data_toGraph = '';
 
 //chart defaults
-var granularity = "daily"
-var type = "total time"
-var timeframe = "last month"
+var granularity = "daily";
+var type = "total time";
+var timeframe = "last month";
+var id = <%= params[:id] %>;
 
 $.ajax({
   type    : 'POST',
   url     : "/users/get_data/", 
   async   : false,
-  data    : { granularity: granularity, type: type, timeframe: timeframe},
+  data    : { granularity: granularity, type: type, timeframe: timeframe, id:id},
   success : function(data) {
               data_toGraph = JSON.parse(data);   
               //console.log(data_toGraph);

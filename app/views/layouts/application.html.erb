@@ -11,6 +11,11 @@
     <% if content_for? :pomodoro_charts %>
       <%= yield :pomodoro_charts %>
     <% end %>
+
+
+  <!--open timer popup-->
+  
+
   <!--google analytics code-->
   <script type="text/javascript">
 
@@ -25,10 +30,22 @@
     })();
 
   </script>
+  
+  <script type="text/javascript">
+
+  function openTimerPopup() {
+    console.log("open timer popup method.");
+    window.open('/timer','','menubar=no,width=530,height=300,toolbar=no, scrollbars=no, resizable=no');
+  }
+
+</script>
 
   </head>
   <body>
-    <%= render 'layouts/header' %>
+    <% if !content_for? :timer %>
+      <%= render 'layouts/header' %>
+    
+    
 
 
     <div class="container">
@@ -38,9 +55,19 @@
 
       
       <%= yield %>
-      <%= render 'layouts/footer' %>
+
+      
+
+        <%= render 'layouts/footer' %>
+      
       <%= debug(params) if Rails.env.development? %>
     </div>
+    <% else %>
+      <%= yield :timer %>
+    
+    <% end %>
+
+
 
     <%= render 'layouts/tracking' %>
 

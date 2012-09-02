@@ -10,6 +10,8 @@
 
 <% end %>
 
+
+
 <div class="row">
   <aside class="span3">
     <section>
@@ -19,8 +21,14 @@
       </h1>
     </section>
 
+  <% if current_user == @user %>
     <section>
-      <% if @user.pomodoros.finished.any? %>
+      <a href="#" class="btn btn-large btn-success" onclick="openTimerPopup()">Open up the timer</a>
+    </section>
+  <% end %>
+
+    <section>
+      <% if @user.pomodoros.finished.any?%>
         <h3>Recent Pomodoros</h3>
         <ol class="pomodoros">
           <%= render @pomodoros.first(10) %>
@@ -46,7 +54,7 @@
 <div id="chart-div-wrapper" class="span9">
 
   <div id="chart_div" class="">
-    <% if not @user.pomodoros.finished.any? %>
+    <% if not @user.pomodoros.finished.any?  and current_user == @user %>
       You don't have any Pomodoros! <%= link_to "Start working on some Pomodoros", root_path %> to see the Pomodoro history chart.
     <% end %>
   </div>

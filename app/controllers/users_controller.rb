@@ -2,13 +2,20 @@ class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:edit, :update]
 
   def show
-	 @user = User.find(params[:id])	
+	 if params[:id]==nil
+    @user = current_user
+   else
+    @user = User.find(params[:id])	
+   end
+
 	 @pomodoros = @user.pomodoros.finished.paginate(page: params[:page], per_page: 10)
   end
 
   def get_data
    #generate default data
-   @user = current_user
+   #@user = current_user #this gets the current signed in user. 
+   @user = User.find(params[:id])   #get user as specifided by URL params
+
    #logger.debug("in get_data: #{params}")
    #logger.debug("number of pomodoros: #{@user.pomodoros.finished}")
    @data = morph_data(@user.pomodoros.finished, params[:type], params[:granularity], params[:timeframe])

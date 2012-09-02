@@ -108,11 +108,26 @@ $(document).ready(function()
 	}); 
 	 
 	function timerDone() { 
-	    if (timeBlock==WORK_TIME) {
-	    	
-			alarm.play();
+		var date = new Date();
 
-	    	//alert('Break time!');
+	    if (timeBlock==WORK_TIME) {
+			//diagnostic
+			console.log(date+": enter work over block.");
+			
+			alarm.play();
+	    	alert('Break time!');
+	    	
+	    	date = new Date();
+			console.log(date+": after displaying alert."); //diagnostic
+
+	    	//self.focus();
+
+
+			
+
+			date = new Date();
+			console.log(date+": after playing sound."); //diagnostic
+	    	
 	    	newBreakBlock();
 	    	setStatus("On break", "warning");
 
@@ -130,8 +145,14 @@ $(document).ready(function()
 
 	    } 
 	    else if (timeBlock==BREAK_TIME) {
+	    	//diagnostic
+			console.log(date+": enter break over block.");
 
+			//self.focus();
 	    	bell.play(); 
+
+	    	date = new Date();
+			console.log(date+": after playing sound."); //diagnostic
 
 	    	alert('Back to work!');
 	    	newWorkBlock();

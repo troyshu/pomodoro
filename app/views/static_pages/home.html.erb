@@ -1,40 +1,16 @@
 
-<%= render 'static_pages/timer_js' %> 
+
 
 <div id="main">
-	
-	<% if not signed_in? %>
-	  <h2>
-	    Welcome to Pomos, the Pomodoro timer
+	<div class="center hero-unit">
 
-	     <%= button_to "Sign up to start tracking your Pomodoros", signup_path, :class => "btn btn-primary btn-large" %>
-	  </h2>
-	<% end %>
-
-	 
-	 
-	 <span id="sound"></span>
-
-	<div id = "timer-wrapper" class="center">
-		
-		<div class="row">
-			<input type="text" name="tags" class="defaultText tags-box" title='Insert tags for current task here' onclick="TINY.box.show({url:'premiumonly.html',width:300,height:150}); clicky.log('/premiumonly','Premium Only Popup');"/>
-		</div>	
-
-		<div class="row">
-
-			<div id="timer" class="well span4">
-			</div>
-
-		  	<button type="button" id="timerButton" class="btn btn-success btn-large span2">Start</button>
-
-		</div>
-		<div class="row">
-			<span id="status" class="label label span2">Ready to start working</span>
-		</div>
-
-
+		  <h1>Welcome to Pomos, the <a href="http://pomos-blog.posterous.com/introduction-to-the-pomodoro-technique" class="dashed" target="_blank">Pomodoro Technique</a> timer</h1>
+		     
+		     <%= button_to "Sign up to start tracking your Pomodoros", signup_path, :class => "btn btn-primary btn-large" %>
+		  
+			<h2><a href="#" onclick="openTimerPopup()">Or click here to just use the timer</a></h2>
 	</div>
+
 
 </div>
 

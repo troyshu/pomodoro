@@ -46,6 +46,14 @@ textarea {
 
 /* typography */
 
+a.dashed {
+  border-bottom: 1px dashed;
+}
+a.dashed:hover {
+  text-decoration: none;
+  border: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
@@ -176,9 +184,10 @@ input, textarea, select, .uneditable-input {
 
 /* timer */
 #timer-wrapper {
-  margin-top: 50px;
+
+  margin-top: 0px;
   width:500px;
-  margin-left: auto;
+  margin-left: 10px;
   margin-right: auto;
   
   span {
@@ -186,7 +195,6 @@ input, textarea, select, .uneditable-input {
   }
 
 }
-
 
 
 #timerButton {
