@@ -75,7 +75,7 @@ function redrawChart() {
     type    : 'POST',
     url     : "/users/get_data/", 
     async   : false,
-    data    : { granularity: granularity, type: type, timeframe: timeframe},
+    data    : { granularity: granularity, type: type, timeframe: timeframe, id:id},
     success : function(data) {
                 //console.log(data);
                 new_data_toGraph = JSON.parse(data);   
