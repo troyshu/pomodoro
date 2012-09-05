@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include ApplicationHelper
+
   before_filter :signed_in_user, only: [:edit, :update]
 
   def show
@@ -9,6 +11,12 @@ class UsersController < ApplicationController
    end
 
 	 @pomodoros = @user.pomodoros.finished.paginate(page: params[:page], per_page: 10)
+   if @pomodoros.count >= 80 and @user.user_level==STARTER_LEVEL and current_user == @user
+    @pomodoros_left = FREE_MAX_POMODOROS - @pomodoros.count
+    
+      flash.now[:warning] = "<b>Warning!</b> You have #{@pomodoros_left} pomodoros left before old pomodoros will start being deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
+
+   end
   end
 
   def get_data

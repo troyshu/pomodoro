@@ -30,12 +30,15 @@ namespace :db do
     total = 365
     count = 0
     total.times do 
-      count = count + 1
+      
       
       users.each do |user|
         random_number = rand(12)
         random_number.times do
+          break if count > 90
           user.pomodoros.create!(length: 25, finished: true, updated_at: count.day.ago, created_at: count.day.ago)
+          count = count + 1
+          
         end
       end
 

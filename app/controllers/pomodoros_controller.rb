@@ -16,7 +16,7 @@ class PomodorosController < ApplicationController
   end
 
   def update
-    logger.debug("updated called with pomodoro_id: #{params[:pomodoro_id]}")
+    //logger.debug("updated called with pomodoro_id: #{params[:pomodoro_id]}")
 
   	@pomodoro = Pomodoro.find_by_id(params[:pomodoro_id])
   	@pomodoro.update_attributes(length: params[:length], finished: true)
