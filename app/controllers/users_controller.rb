@@ -11,10 +11,11 @@ class UsersController < ApplicationController
    end
 
 	 @pomodoros = @user.pomodoros.finished.paginate(page: params[:page], per_page: 10)
-   if @pomodoros.count >= 80 and @user.user_level==STARTER_LEVEL and current_user == @user
-    @pomodoros_left = FREE_MAX_POMODOROS - @pomodoros.count
-    
-      flash.now[:warning] = "<b>Warning!</b> You have #{@pomodoros_left} pomodoros left before old pomodoros will start being deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
+   if @pomodoros.finished.count >= 80 and @pomodoros.finished.count < FREE_MAX_POMODOROS and @user.user_level==STARTER_LEVEL and current_user == @user
+    @pomodoros_left = FREE_MAX_POMODOROS - @pomodoros.finished.count
+    flash.now[:warning] = "<b>Warning!</b> You have #{@pomodoros_left} Pomodoros left before old pomodoros will start being deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
+   elsif @pomodoros.finished.count == 100 and @user.user_level==STARTER_LEVEL and current_user == @user
+    flash.now[:error] = "<b>Warning!</b> You have hit the #{FREE_MAX_POMODOROS} Pomodoro limit for free users. After you complete a new Pomodoro, the oldest one in your history will be deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
 
    end
   end
