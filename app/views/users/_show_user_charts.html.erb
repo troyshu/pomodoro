@@ -120,7 +120,9 @@ function toggleTag(tag) {
   //first determine if tag is currently off or on
   //if tag is currently off
   if (cur_tag_status==0) {
+    //turn it on (ie select it)
     tag_status[tag]=1;
+
     //get tag filtered data
     new_filtered_data = getFilteredData(tag);
     //add to data array
@@ -130,7 +132,9 @@ function toggleTag(tag) {
   }
   //if tag is currently on
   if (cur_tag_status==1) {
+    //turn it off
     tag_status[tag]=0;
+
     //remove its column from the current data array
     new_data_toGraph = removeColFromDataArray(cur_chart_data, tag);
     //regraph
@@ -212,5 +216,7 @@ function removeColFromDataArray(data_array, column_name) {
 function removeByIndex(arrayName,arrayIndex){ 
   arrayName.splice(arrayIndex,1); 
 }
+
+
 
 </script>
