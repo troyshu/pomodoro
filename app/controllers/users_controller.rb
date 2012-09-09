@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  include ApplicationHelper
+  include UsersHelper
+  include ActionView::Helpers::TextHelper
 
   before_filter :signed_in_user, only: [:edit, :update]
 
@@ -11,10 +12,11 @@ class UsersController < ApplicationController
    end
 
 	 @pomodoros = @user.pomodoros.finished.paginate(page: params[:page], per_page: 10)
-   if @pomodoros.finished.count >= 80 and @pomodoros.finished.count < FREE_MAX_POMODOROS and @user.user_level==STARTER_LEVEL and current_user == @user
+   if @pomodoros.finished.count >= 80 and @pomodoros.finished.count < FREE_MAX_POMODOROS and is_free_user(@user) and current_user == @user
     @pomodoros_left = FREE_MAX_POMODOROS - @pomodoros.finished.count
-    flash.now[:warning] = "<b>Warning!</b> You have #{@pomodoros_left} Pomodoros left before old pomodoros will start being deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
-   elsif @pomodoros.finished.count == 100 and @user.user_level==STARTER_LEVEL and current_user == @user
+    @pomodoro_pluralize = pluralize(@pomodoros_left, 'Pomodoro')
+    flash.now[:warning] = "<b>Warning!</b> You have #{@pomodoro_pluralize} left before old Pomodoros will start being deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
+   elsif @pomodoros.finished.count == 100 and is_free_user(@user) and current_user == @user
     flash.now[:error] = "<b>Warning!</b> You have hit the #{FREE_MAX_POMODOROS} Pomodoro limit for free users. After you complete a new Pomodoro, the oldest one in your history will be deleted. <a href='/pricing '>Click here to upgrade.</a>".html_safe
 
    end
@@ -27,8 +29,10 @@ class UsersController < ApplicationController
 
    #logger.debug("in get_data: #{params}")
    #logger.debug("number of pomodoros: #{@user.pomodoros.finished}")
-   @data = morph_data(@user.pomodoros.finished, params[:type], params[:granularity], params[:timeframe])
+   @data = morph_data(@user.pomodoros.finished, params[:type], params[:granularity], params[:timeframe], params[:tag_filter])
    #logger.debug("get_data data: #{@data}")
+
+
    render :text => @data
   end
 
@@ -76,6 +80,7 @@ class UsersController < ApplicationController
     end
   end
 
+
   private
 
     def signed_in_user
@@ -90,25 +95,66 @@ class UsersController < ApplicationController
       redirect_to(root_path) unless current_user?(@user)
     end
   
-    def morph_data(raw_pomodoros, type, granularity, timeframe)
-      @grouped_pomodoros = raw_pomodoros.reverse
-
+    def morph_data(raw_pomodoros, type, granularity, timeframe, tag_filter)
+      logger.debug("tag_filter: #{tag_filter}")
+      
       #only get pomodoros relevant to current timeframe
-      cutoff = 20.years.ago
+      cutoff = 20.years.ago #the "default", though the default specified by JS is last month
       if timeframe=="last week"
-        cutoff = 1.week.ago
+        cutoff = 1.week.ago.beginning_of_day
       elsif timeframe=="last month"
-        cutoff = 1.month.ago
+        cutoff = 1.month.ago.beginning_of_day
       elsif timeframe=="last year"
-        cutoff = 1.year.ago
+        cutoff = 1.year.ago.beginning_of_day
       end 
 
-      #check to see if pomodoro lies within the specified timeframe. if not, skip it
-      logger.debug("pomodoros size before: #{@grouped_pomodoros.count}")
-      @grouped_pomodoros = @grouped_pomodoros.select{|p| p.updated_at >= cutoff }
-      logger.debug("pomodoros size after: #{@grouped_pomodoros.count}")
+      #get date range start and end date
+      sorted_pomodoros = raw_pomodoros.sort_by {|p| p.updated_at}
+      
+      start_date = sorted_pomodoros.first.updated_at.to_date
+      end_date = sorted_pomodoros.last.updated_at.to_date
 
-      #group by granularity
+      if not tag_filter.blank?
+        #apply tag filter to raw pomodoros
+        filtered_pomodoros = raw_pomodoros.tagged_with(tag_filter)
+      else
+        filtered_pomodoros = raw_pomodoros
+      end
+
+
+      @grouped_pomodoros = filtered_pomodoros
+      
+
+      
+      #FILL in days with no pomodoros with 0
+
+      #logger.debug("last: #{@grouped_pomodoros.last.updated_at}")
+      #logger.debug("first: #{@grouped_pomodoros.first.updated_at}")
+
+      daterange = ((start_date)..(end_date)).to_a.map{|x| x.to_s(:db)}
+      logger.debug("daterange: #{daterange}")
+      daterange.each do |date| 
+        temp_pomodoro = Pomodoro.new(finished:true, created_at: date, updated_at: date)
+        #add onto original list of pomodoros a list of pomodoros, one on each date, with length 0
+        @grouped_pomodoros = @grouped_pomodoros.append(temp_pomodoro)
+      end
+
+      #check to see if pomodoro lies within the specified timeframe. if not, skip it
+      #logger.debug("pomodoros size before: #{@grouped_pomodoros.count}")
+      @grouped_pomodoros = @grouped_pomodoros.select{|p| p.updated_at >= cutoff }
+      
+
+      #then DON'T FORGET to subtract out 1 (if daily), 7 (if weekly), etc. at the end from pomodoro count
+      
+      #logger.debug("pomodoros size after: #{@grouped_pomodoros.count}")
+
+      #group by granularity (sort first)
+      @grouped_pomodoros = @grouped_pomodoros.sort_by { |p| p.updated_at }
+      
+      logger.debug("first pomodoro date: #{@grouped_pomodoros.first.updated_at}")
+      logger.debug("last pomodoro date: #{@grouped_pomodoros.last.updated_at}")
+
+
       if granularity=="daily"
         @grouped_pomodoros = @grouped_pomodoros.group_by{|p| p.updated_at.at_beginning_of_day }
       elsif granularity=="weekly"
@@ -128,15 +174,23 @@ class UsersController < ApplicationController
 
       #y labels
       if type=="total time"
-        type_label = "total time (mintues)"
+        if not tag_filter.blank?
+          type_label = "#{tag_filter}"
+        else
+          type_label = "total time (mintues)"
+        end
       elsif type=="count"
-        type_label = "number of Pomodoros"
+        if not tag_filter.blank?
+          type_label = "#{tag_filter}"
+        else
+          type_label = "number of Pomodoros: total"
+        end
       end
         
 
           
       grouped_array.push([date_label, type_label])
-      logger.debug("successfulley grouped. moving onto summation.")
+      #logger.debug("successfulley grouped. moving onto summation.")
       @grouped_pomodoros.each do |group, pomodoros|
         sum = 0
 
@@ -144,14 +198,17 @@ class UsersController < ApplicationController
 
         pomodoros.each do |pomodoro|
 
-
-
+          #ignore zero length pomodoros
+          if pomodoro.id==nil
+            next
+          end
 
           if type=="total time"
             sum = sum + pomodoro.length
           elsif type=="count"
             sum = sum + 1
           end
+
         end
 
 
@@ -160,8 +217,10 @@ class UsersController < ApplicationController
         if granularity=="daily"
           #logger.debug("DAILY GRANULARITY. changing labels")
           new_group = group.strftime("%A, %D")
+
         elsif granularity=="weekly"
           new_group = group.strftime("%A, %D")
+
         end
         
         #formatted_sum = format_sum(sum)

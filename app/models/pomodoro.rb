@@ -1,4 +1,7 @@
 class Pomodoro < ActiveRecord::Base
+  #taggable
+  acts_as_taggable_on :tags
+
   #scope for pomodoros that are finished 
   scope :finished, where(finished: true)
 

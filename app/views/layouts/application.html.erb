@@ -12,6 +12,10 @@
       <%= yield :pomodoro_charts %>
     <% end %>
 
+    <% if content_for? :timer %>
+      <%= yield :timer_header %>
+    <% end %>
+
 
   <!--open timer popup-->
   

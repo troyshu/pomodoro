@@ -2,6 +2,10 @@
 //timer code
 $(document).ready(function()
  {
+	<% if not is_free_user(current_user) %>
+		$("#tags").tagit();
+	<% end %>
+
 	//time block intervals
 	var WORK_TIME = 25;
 	var BREAK_TIME = 5;
@@ -112,13 +116,13 @@ $(document).ready(function()
 
 	    if (timeBlock==WORK_TIME) {
 			//diagnostic
-			console.log(date+": enter work over block.");
+			//console.log(date+": enter work over block.");
 			
 			alarm.play();
-	    	alert('Break time!');
+	    	
 	    	
 	    	date = new Date();
-			console.log(date+": after displaying alert."); //diagnostic
+			//console.log(date+": after displaying alert."); //diagnostic
 
 	    	//self.focus();
 
@@ -126,33 +130,41 @@ $(document).ready(function()
 			
 
 			date = new Date();
-			console.log(date+": after playing sound."); //diagnostic
+			//console.log(date+": after playing sound."); //diagnostic
 	    	
 	    	newBreakBlock();
 	    	setStatus("On break", "warning");
+			
+
+			//mark pomodoro as done
+			//also don't forget to send the pomodoro tags
+			var pomodoro_tags = $("#tags").tagit("assignedTags");
+			//console.log(pomodoro_tags); //diagnostic
 
 	    	if (pomodoro_id != '') {
 	    		//there exists a pomodoro to be marked "done". so do so
 	    		$.ajax({
 				  type    : 'POST',
 				  url     : "/pomodoros/update/", 
-				  data    : { pomodoro_id: pomodoro_id, length: WORK_TIME},
+				  data    : { pomodoro_id: pomodoro_id, length: WORK_TIME, pomodoro_tags: pomodoro_tags },
 				  success : function(data) {
 				              //console.log(data);         
 				            },  
 				});
 	    	}
 
+	    	alert('Break time!');
+
 	    } 
 	    else if (timeBlock==BREAK_TIME) {
 	    	//diagnostic
-			console.log(date+": enter break over block.");
+			//console.log(date+": enter break over block.");
 
 			//self.focus();
 	    	bell.play(); 
 
 	    	date = new Date();
-			console.log(date+": after playing sound."); //diagnostic
+			//console.log(date+": after playing sound."); //diagnostic
 
 	    	alert('Back to work!');
 	    	newWorkBlock();
@@ -212,9 +224,13 @@ $(document).ready(function()
 		$('#status').prop('class', 'label label-'+type+' span2');
 	}
 
-	
-
-	
+	//tag box helpers
+	//when enter is pressed
+	$("#tags").keyup(function(event){
+	    if(event.keyCode == 13){
+	        $("#timerButton").focus();
+	    }
+	});
 
 });
 

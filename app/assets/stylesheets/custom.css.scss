@@ -205,6 +205,14 @@ input, textarea, select, .uneditable-input {
   font-size: 300%;
 }
 
+.small {
+  text-align:left;
+  margin-left:20px;
+  margin-bottom: 5px;
+  font-size:12px;
+  color:#aaaaaa;
+}
+
 /* miscellaneous */
 
 .debug_dump {
@@ -409,3 +417,16 @@ a.atooltip {
 a.atooltip:hover {
   border-bottom:none;
 }
+
+
+/* tag cloud */
+ #tag_cloud_div {
+  margin-top:20px;
+  float:left;
+  clear:both;
+ }
+
+.css1 { font-size: 1.0em; }
+.css2 { font-size: 1.2em; }
+.css3 { font-size: 1.4em; }
+.css4 { font-size: 1.6em; }

@@ -11,6 +11,8 @@
 #
 
 class User < ActiveRecord::Base
+	acts_as_tagger
+	
 	attr_accessible :email, :name, :user_level, :password, :password_confirmation
 	has_secure_password 
 

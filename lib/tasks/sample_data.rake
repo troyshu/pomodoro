@@ -5,7 +5,8 @@ namespace :db do
     User.create!(name: "Example User",
                  email: "example@railstutorial.org",
                  password: "foobar",
-                 password_confirmation: "foobar")
+                 password_confirmation: "foobar",
+                 user_level: 2)
 
     99.times do |n|
       name  = Faker::Name.name
@@ -26,21 +27,42 @@ namespace :db do
     # end
 
     #create pomodoros: random number for the past year
-    users = User.all(limit:1)
+    two_users = User.limit(2)
+    user = two_users[0]
     total = 365
     count = 0
+    daycount = 0
     total.times do 
       
+      daycount = daycount + 1
       
-      users.each do |user|
         random_number = rand(12)
         random_number.times do
           break if count > 90
-          user.pomodoros.create!(length: 25, finished: true, updated_at: count.day.ago, created_at: count.day.ago)
+          user.pomodoros.create!(length: 25, finished: true, updated_at: daycount.day.ago, created_at: daycount.day.ago)
           count = count + 1
           
         end
-      end
+   
+
+    end
+
+    user = two_users[1]
+    total = 365
+    count = 0
+    daycount = 0
+    total.times do 
+      
+      daycount = daycount + 1
+
+        random_number = rand(12)
+        random_number.times do
+          break if count > 90
+          user.pomodoros.create!(length: 25, finished: true, updated_at: daycount.day.ago, created_at: daycount.day.ago)
+          count = count + 1
+          
+        end
+
 
     end
 

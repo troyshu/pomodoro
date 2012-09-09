@@ -27,6 +27,14 @@
     </section>
   <% end %>
 
+  <% if not is_free_user(@user) %>
+    <section>
+      <div class="alert alert-info">
+        <b>Premium User</b><% if current_user == @user %> | Thank you for supporting POMOS!<% end %>
+      </div>
+    </section>
+  <% end %>
+
     <section>
       <% if @user.pomodoros.finished.any?%>
         <h3>Recent Pomodoros</h3>
@@ -77,6 +85,14 @@
 
   <div id="table_div" class="">
   </div>
+
+  <div id="tag_cloud_div" class="">
+    <% tag_cloud(current_user.pomodoros.tag_counts, %w(css1 css2 css3 css4)) do |tag, css_class| %>
+      <%= link_to tag.name, "#", :class => css_class, :onclick => "toggleTag(\'#{tag.name}\');".html_safe %>  
+    <% end %>
+  </div>
+
+
 <% end %>
 
 </div>

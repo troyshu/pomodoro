@@ -9,6 +9,10 @@ var type = "total time";
 var timeframe = "last month";
 var id = <%= params[:id] %>;
 
+//chart globals
+var cur_chart_data;
+var tag_status = {};
+
 $.ajax({
   type    : 'POST',
   url     : "/users/get_data/", 
@@ -31,6 +35,8 @@ google.setOnLoadCallback(function(){ drawChart(data_toGraph) });
 
 
 function drawChart(data_toGraph) {
+
+  cur_chart_data = data_toGraph;
 
   var data = google.visualization.arrayToDataTable(data_toGraph);
 
@@ -62,6 +68,8 @@ function drawTable(data_toGraph) {
 //tester method: ajax chart updating
 function redrawChart() {
   var new_data_toGraph = '';
+  tag_status = {}; //we're switching timeframes, type, etc. so reset tags
+
 
   //get chart options from DOM
   type = $('input[name=chart-type]:radio:checked').val();
@@ -87,4 +95,113 @@ function redrawChart() {
   //drawTable(new_data_toGraph);
 
 }
+
+
+
+//////////////////////tag cloud methods
+function toggleTag(tag) {
+  console.log(tag);
+  //console.log(cur_chart_data)
+  if (tag_status[tag]==undefined) {
+    tag_status[tag] = 0;
+  }
+  cur_tag_status = tag_status[tag];
+  console.log("before status: "+tag_status[tag]);
+
+  //first determine if tag is currently off or on
+  //if tag is currently off
+  if (cur_tag_status==0) {
+    tag_status[tag]=1;
+    //get tag filtered data
+    new_filtered_data = getFilteredData(tag);
+    //add to data array
+    new_data_toGraph = addColToDataArray(cur_chart_data,new_filtered_data);
+    //regraph
+    drawChart(new_data_toGraph);
+  }
+  //if tag is currently on
+  if (cur_tag_status==1) {
+    tag_status[tag]=0;
+    //remove its column from the current data array
+    new_data_toGraph = removeColFromDataArray(cur_chart_data, tag);
+    //regraph
+    drawChart(new_data_toGraph);
+  }
+}
+
+//get filtered pomodoro data
+function getFilteredData(tag) {
+  var new_data_toGraph = '';
+
+  //get chart options from DOM
+  type = $('input[name=chart-type]:radio:checked').val();
+  granularity = $('input[name=chart-granularity]:radio:checked').val();
+  timeframe = $('input[name=chart-timeframe]:radio:checked').val();;
+
+  //console.log(type);
+  //console.log(granularity);
+
+  $.ajax({
+    type    : 'POST',
+    url     : "/users/get_data/", 
+    async   : false,
+    data    : { granularity: granularity, type: type, timeframe: timeframe, id:id, tag_filter:tag},
+    success : function(data) {
+                //console.log(data);
+                new_data_toGraph = JSON.parse(data);   
+                //console.log(data_toGraph);
+              },  
+  });
+  //console.log(new_data_toGraph); //diagnostic
+  return new_data_toGraph;
+}
+
+//adds only column of data from second array to first data array
+function addColToDataArray(data_array, data_array_toAdd) {
+  if (data_array.length != data_array_toAdd.length) {
+    console.log("ERROR: trying to add a tagged Pomodoro array to master data array of different list.");
+    console.log(data_array);
+    console.log(data_array_toAdd);
+    return;
+  }
+  
+
+  //first push new header
+  data_array[0].push(data_array_toAdd[0][1]);
+
+  //loop through master data array
+  for (var i=1; i<data_array.length; i++) {
+    //add corresponding entry to toAdd array to last element
+    data_array[i].push(data_array_toAdd[i][1]);
+  }
+  return data_array;
+
+}
+
+//removes the column (given by tag name) from the data array
+function removeColFromDataArray(data_array, column_name) {
+  //find index of column name in headers
+  var colToRemove = data_array[0].indexOf(column_name);
+  if (colToRemove < 1) {
+    console.log("ERROR: trying to remove invalid column.");
+    console.log(colToRemove);
+    return;
+  }
+
+  //remove tag from header
+  removeByIndex(data_array[0],colToRemove);
+
+  //loop through master data array
+  for (var i=1; i<data_array.length; i++) {
+    //add corresponding entry to toAdd array to last element
+    removeByIndex(data_array[i],colToRemove);
+  } 
+  return data_array;
+
+}
+
+function removeByIndex(arrayName,arrayIndex){ 
+  arrayName.splice(arrayIndex,1); 
+}
+
 </script>

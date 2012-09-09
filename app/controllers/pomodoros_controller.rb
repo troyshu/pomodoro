@@ -1,6 +1,6 @@
 class PomodorosController < ApplicationController
 	include SessionsHelper
-  include ApplicationHelper
+  include UsersHelper
 
   before_filter :signed_in_user, only: [:create, :destroy, :update]
 
@@ -24,11 +24,16 @@ class PomodorosController < ApplicationController
   end
 
   def update
+    @user = current_user
     #logger.debug("updated called with pomodoro_id: #{params[:pomodoro_id]}")
 
   	@pomodoro = Pomodoro.find_by_id(params[:pomodoro_id])
   	@pomodoro.update_attributes(length: params[:length], finished: true)
-  	render :text => params
+  	@user.tag(@pomodoro, :with=>params[:pomodoro_tags], :on=>:tags)
+
+    render :text => params
   end
+
+  
 
 end
