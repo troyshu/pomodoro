@@ -68,7 +68,7 @@ function drawTable(data_toGraph) {
 //tester method: ajax chart updating
 function redrawChart() {
   var new_data_toGraph = '';
-  tag_status = {}; //we're switching timeframes, type, etc. so reset tags
+  //tag_status = {};  
 
 
   //get chart options from DOM
@@ -93,6 +93,15 @@ function redrawChart() {
 
   drawChart(new_data_toGraph);
   //drawTable(new_data_toGraph);
+  
+  //redraw selected tags
+  for (tag_key in tag_status) {
+    if (tag_status[tag_key]==1) {
+      new_filtered_data = getFilteredData(tag_key);
+      new_data_toGraph = addColToDataArray(cur_chart_data,new_filtered_data);
+      drawChart(new_data_toGraph);
+    }
+  }
 
 }
 
@@ -100,13 +109,13 @@ function redrawChart() {
 
 //////////////////////tag cloud methods
 function toggleTag(tag) {
-  console.log(tag);
+  //console.log(tag);
   //console.log(cur_chart_data)
   if (tag_status[tag]==undefined) {
     tag_status[tag] = 0;
   }
   cur_tag_status = tag_status[tag];
-  console.log("before status: "+tag_status[tag]);
+  //console.log("before status: "+tag_status[tag]);
 
   //first determine if tag is currently off or on
   //if tag is currently off
