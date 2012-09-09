@@ -36,13 +36,11 @@
   <% end %>
 
     <section>
-      <% if @user.pomodoros.finished.any?%>
-        <h3>Recent Pomodoros</h3>
-        <ol class="pomodoros">
-          <%= render @pomodoros.first(10) %>
-        </ol>
-        
-      <% end %>
+      <div id="tag_cloud_div" class="">
+        <% tag_cloud(current_user.pomodoros.where("updated_at >= \"#{1.year.ago.beginning_of_day}\"").tag_counts, %w(css1 css2 css3 css4)) do |tag, css_class| %>
+          <%= link_to tag.name, "#", :class => css_class, :onclick => "toggleTag(\'#{tag.name}\');".html_safe %>  
+        <% end %>
+      </div>
     </section>
 
   </aside>
@@ -86,11 +84,7 @@
   <div id="table_div" class="">
   </div>
 
-  <div id="tag_cloud_div" class="">
-    <% tag_cloud(current_user.pomodoros.tag_counts, %w(css1 css2 css3 css4)) do |tag, css_class| %>
-      <%= link_to tag.name, "#", :class => css_class, :onclick => "toggleTag(\'#{tag.name}\');".html_safe %>  
-    <% end %>
-  </div>
+  
 
 
 <% end %>

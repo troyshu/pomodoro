@@ -142,7 +142,6 @@ class UsersController < ApplicationController
       #check to see if pomodoro lies within the specified timeframe. if not, skip it
       #logger.debug("pomodoros size before: #{@grouped_pomodoros.count}")
       @grouped_pomodoros = @grouped_pomodoros.select{|p| p.updated_at >= cutoff }
-      
 
       #then DON'T FORGET to subtract out 1 (if daily), 7 (if weekly), etc. at the end from pomodoro count
       
