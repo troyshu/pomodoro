@@ -35,6 +35,7 @@
     </section>
   <% end %>
 
+  <% if not is_free_user(current_user) %>
     <section>
       <div id="tag_cloud_div" class="">
         <% tag_cloud(current_user.pomodoros.where("updated_at >= \"#{1.year.ago.beginning_of_day}\"").tag_counts, %w(css1 css2 css3 css4)) do |tag, css_class| %>
@@ -43,6 +44,7 @@
       </div>
 
     </section>
+  <% end %>
 
   </aside>
 

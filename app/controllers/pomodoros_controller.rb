@@ -29,7 +29,11 @@ class PomodorosController < ApplicationController
 
   	@pomodoro = Pomodoro.find_by_id(params[:pomodoro_id])
   	@pomodoro.update_attributes(length: params[:length], finished: true)
-  	@user.tag(@pomodoro, :with=>params[:pomodoro_tags], :on=>:tags)
+  	
+    #only tag if the current logged in user is NOT a starter user
+    if not params[:pomodoro_tags].empty? and current_user.user_level>STARTER_LEVEL
+      @user.tag(@pomodoro, :with=>params[:pomodoro_tags], :on=>:tags)
+    end
 
     render :text => params
   end
