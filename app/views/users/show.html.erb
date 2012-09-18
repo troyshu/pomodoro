@@ -64,7 +64,7 @@
 
   <div id="chart_div" class="">
     <% if not @user.pomodoros.finished.any?  and current_user == @user %>
-      You don't have any Pomodoros! <%= link_to "Start working on some Pomodoros", root_path %> to see the Pomodoro history chart.
+      You don't have any Pomodoros! <%= link_to "Start working on some Pomodoros", "#", :onclick=>"openTimerPopup()" %> to see the Pomodoro history chart.
     <% end %>
   </div>
 
