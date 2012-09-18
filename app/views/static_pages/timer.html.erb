@@ -21,12 +21,10 @@
 	<div id = "timer-wrapper" class="center">
 		
 		<div class="row">
-			<% if is_free_user(current_user) %>
-			<input type="text" style="" id="tags" name="tags" class="defaultText tags-box" title='Insert tags for current task here'  onclick="TINY.box.show({url:'premiumonly.html',width:300,height:150}); clicky.log('/premiumonly','Premium Only Popup');" />
-			<% else %>
+
 			<div class="small">Insert tags for current task below</div>
 			<input type="text" style="" id="tags" name="tags" class="" />
-			<% end %>
+
 
 		</div>	
 
