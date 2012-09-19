@@ -34,6 +34,8 @@ class PomodorosController < ApplicationController
     users_tag_count = @user.owned_tags.count
     if not params[:pomodoro_tags].empty?
       users_tag_count = users_tag_count + params[:pomodoro_tags].split(',').count
+    end
+    
     #if free user, and tags (including new ones) is greater than limit, DON'T TAG
     if is_free_user(@user) and users_tag_count > FREE_MAX_TAGS
       render :text => params

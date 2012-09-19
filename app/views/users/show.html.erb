@@ -35,6 +35,12 @@
     </section>
   <% end %>
 
+  <% if is_free_user(current_user)  %>
+      <div class="row alert timer-alert">
+        <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your Pomodoros). You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.
+      </div>
+    <% end %>
+
 
     <section>
       <div id="tag_cloud_div" class="">

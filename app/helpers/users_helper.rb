@@ -5,6 +5,7 @@ module UsersHelper
 	#free user max pomodoros
 	FREE_MAX_POMODOROS = 100
 	FREE_MAX_TAGS = 3
+	
 
 	STARTER_LEVEL = 1
 
