@@ -13,12 +13,12 @@ class SessionsController < ApplicationController
 				sign_in user
 				redirect_back_or user
 			else
-				flash.now[:error] = "Invalid password."
+				flash.now[:error] = "Invalid user/password combination."
 				render 'new'
 			end
 		else
 			#create an error message and redirect to sign-in page
-			flash.now[:error] = "Invalid user. User does not exist."
+			flash.now[:error] = "Invalid user/password combination."
 			render 'new'
 		end
 	end

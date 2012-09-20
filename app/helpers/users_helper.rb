@@ -2,9 +2,11 @@ module UsersHelper
 	include ActsAsTaggableOn::TagsHelper
 	
 	#GLOBAL VARIABLES
+	MAIL_CHIMP_API_KEY = "f5fa2cbf650d0992f31fd1b7d15861c0-us5"
+
 	#free user max pomodoros
 	FREE_MAX_POMODOROS = 100
-	FREE_MAX_TAGS = 3
+	FREE_MAX_TAGS = 5
 	
 
 	STARTER_LEVEL = 1

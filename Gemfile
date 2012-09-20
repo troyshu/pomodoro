@@ -7,6 +7,8 @@ gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
 gem 'acts-as-taggable-on', '~> 2.3.1'
+gem 'gibbon'
+gem 'stripe'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'

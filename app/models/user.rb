@@ -13,7 +13,7 @@
 class User < ActiveRecord::Base
 	acts_as_tagger
 	
-	attr_accessible :email, :name, :user_level, :password, :password_confirmation
+	attr_accessible :email, :name, :password, :password_confirmation #not making user_level accessible. have to set it individually
 	has_secure_password 
 
 	before_save { |user| user.email = email.downcase }

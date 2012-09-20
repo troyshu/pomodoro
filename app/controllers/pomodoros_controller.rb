@@ -31,13 +31,23 @@ class PomodorosController < ApplicationController
   	@pomodoro.update_attributes(length: params[:length], finished: true)
   	
     #check to see how many tags current user has
-    users_tag_count = @user.owned_tags.count
-    if not params[:pomodoro_tags].empty?
-      users_tag_count = users_tag_count + params[:pomodoro_tags].split(',').count
+
+    tag_set = Set.new
+    @user.owned_tags.each do |tag_obj|
+      tag_set.add(tag_obj.name)
     end
+
+    params[:pomodoro_tags].each do |tag|
+      tag_set.add(tag)
+    end
+
+    #logger.debug("params[:pomodoro_tags]: #{params[:pomodoro_tags]}")
+
     
+    #logger.debug("users tag count #{users_tag_count}")
+
     #if free user, and tags (including new ones) is greater than limit, DON'T TAG
-    if is_free_user(@user) and users_tag_count > FREE_MAX_TAGS
+    if is_free_user(@user) and tag_set.count > FREE_MAX_TAGS
       render :text => params
     else
       if not params[:pomodoro_tags].empty?

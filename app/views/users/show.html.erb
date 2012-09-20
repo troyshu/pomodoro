@@ -35,14 +35,27 @@
     </section>
   <% end %>
 
+
   <% if is_free_user(current_user)  %>
+
+    <% if (UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count)>0 %>
+
+
       <div class="row alert timer-alert">
         <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your Pomodoros). You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.
+    <% else %>
+      <div class="row alert alert-error timer-alert">
+        <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your Pomodoros). <b>You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.</b>
+    <% end %>
+        
+        <br>
+        Click <%= link_to "here", "/pricing" %> to upgrade.
       </div>
     <% end %>
 
 
     <section>
+      <h4>Tag cloud:</h4>
       <div id="tag_cloud_div" class="">
         <% tag_cloud(current_user.pomodoros.where("updated_at >= \"#{1.year.ago.beginning_of_day}\"").tag_counts, %w(css1 css2 css3 css4)) do |tag, css_class| %>
           <%= link_to tag.name, "#", :id=>"#{tag.name}-tag",:class => "#{css_class} tag-link", :onclick => "$(this).toggleClass(\'selected-tag\'); toggleTag(\'#{tag.name}\'); ".html_safe %>

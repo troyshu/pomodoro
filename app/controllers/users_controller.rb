@@ -49,6 +49,11 @@ class UsersController < ApplicationController
   	if @user.save
   		#handle a successful save
   		sign_in @user
+
+      #add user to general newsletter list
+      Gibbon.new(MAIL_CHIMP_API_KEY).list_subscribe(:id => "0e829bc994", :email_address => params[:user][:email], :double_optin => false)
+      #logger.debug("email #{params[:user][:email]} added to mailchimp")
+
   		flash[:success] = "Thanks for signing up!"
   		redirect_to @user
   	else 
