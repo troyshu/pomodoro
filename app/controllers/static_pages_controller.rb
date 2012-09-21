@@ -1,6 +1,8 @@
 class StaticPagesController < ApplicationController
   include UsersHelper
-  
+  if not Rails.env.development? 
+    use Rack::SSL
+  end
 
   def home
   	if signed_in?
