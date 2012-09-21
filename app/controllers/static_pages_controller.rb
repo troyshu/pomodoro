@@ -12,6 +12,7 @@ class StaticPagesController < ApplicationController
   end
 
   def getpremium
+
 	
 	if request.post?
 
@@ -34,11 +35,15 @@ class StaticPagesController < ApplicationController
 			)
 			
 			#update current user's user level
-			current_user.update_attribute(:user_level, 2)
+			current_user.update_attribute(:user_level, PREMIUM_LEVEL)
 			#logger.debug("current user's new user level: #{current_user.user_level}")
 
 			#redirect to home, with a flash
-			flash[:success] = "Your account has been upgraded to Premium! Thank you for supporting POMOS!"
+			flash[:success] = "Your account has been upgraded to Premium! Thank you for supporting POMOS! Please sign in again."
+			redirect_to root_path
+		end
+	elsif request.get?
+		if current_user.user_level == PREMIUM_LEVEL
 			redirect_to current_user
 		end
 	end
