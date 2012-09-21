@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  if not Rails.env.development? 
+    use Rack::SSL
+  end
+
   include UsersHelper
   include ActionView::Helpers::TextHelper
 

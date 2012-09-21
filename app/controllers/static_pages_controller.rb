@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   include UsersHelper
+  
 
   def home
   	if signed_in?
