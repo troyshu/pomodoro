@@ -9,8 +9,8 @@
     
   });
 </script>
-
-<h1>What is the dollar value of the extra productivity you gain in a month, using the Pomodoro Technique?</h1>
+<h1>Pricing</h1>
+<h2>In a month, how much more productive do you think you are when using the Pomodoro Technique? What is the dollar value of that productivity?</h2>
 
 <div id="container">
 	<div class="pricingtable">
@@ -58,6 +58,6 @@
 		<h1><sup>$</sup>1.99</h1>
 		<p>per month</p>
 
-		 <%= link_to "Sign Up", "/getpremium", class: "signup-button" %>
+		 <%= link_to "Sign Up", "#", class: "signup-button", :onClick=> "TINY.box.show({url:'notready.html',width:300,height:150}); _gaq.push(['_trackEvent', 'Popups', 'Premium Not Ready']);".html_safe %>
 	</div>
 </div>
