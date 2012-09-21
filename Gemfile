@@ -10,6 +10,8 @@ gem 'acts-as-taggable-on', '~> 2.3.1'
 gem 'gibbon'
 gem 'stripe'
 
+
+
 group :development, :test do
   gem 'sqlite3', '1.3.5'
   gem 'rspec-rails', '2.10.0'
