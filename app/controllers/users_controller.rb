@@ -104,13 +104,13 @@ class UsersController < ApplicationController
       logger.debug("tag_filter: #{tag_filter}")
       
       #only get pomodoros relevant to current timeframe
-      cutoff = 20.years.ago #the "default", though the default specified by JS is last month
+      cutoff = 20.years.ago::time #the "default", though the default specified by JS is last month
       if timeframe=="last week"
-        cutoff = 1.week.ago.beginning_of_day
+        cutoff = 1.week.ago.beginning_of_day::time
       elsif timeframe=="last month"
-        cutoff = 1.month.ago.beginning_of_day
+        cutoff = 1.month.ago.beginning_of_day::time
       elsif timeframe=="last year"
-        cutoff = 1.year.ago.beginning_of_day
+        cutoff = 1.year.ago.beginning_of_day::time
       end 
 
       #get date range start and end date
@@ -146,7 +146,7 @@ class UsersController < ApplicationController
 
       #check to see if pomodoro lies within the specified timeframe. if not, skip it
       #logger.debug("pomodoros size before: #{@grouped_pomodoros.count}")
-      @grouped_pomodoros = @grouped_pomodoros.select{|p| p.updated_at >= cutoff::time }
+      @grouped_pomodoros = @grouped_pomodoros.select{|p| p.updated_at >= cutoff }
 
       #then DON'T FORGET to subtract out 1 (if daily), 7 (if weekly), etc. at the end from pomodoro count
       
