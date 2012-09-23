@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   include UsersHelper
+
   if not Rails.env.development? 
     use Rack::SSL
   end
@@ -14,9 +15,7 @@ class StaticPagesController < ApplicationController
   def help
   end
 
-  def getpremium
-
-	
+  def getpremium	
 	if request.post?
 
 		#obviously, only upgrade if user_level is currently 1
