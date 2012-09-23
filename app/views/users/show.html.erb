@@ -42,10 +42,10 @@
 
 
       <div class="row alert timer-alert">
-        <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your Pomodoros). You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.
+        <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your pomodoros). You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.
     <% else %>
       <div class="row alert alert-error timer-alert">
-        <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your Pomodoros). <b>You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.</b>
+        <b>Warning</b> As a free user, you are limited to <%= UsersHelper::FREE_MAX_TAGS %> tags in total (across all your pomodoros). <b>You currently have <%= pluralize((UsersHelper::FREE_MAX_TAGS - current_user.owned_tags.count),"tag") %> left.</b>
     <% end %>
         
         <br>
@@ -83,7 +83,7 @@
 
   <div id="chart_div" class="">
     <% if not @user.pomodoros.finished.any?  and current_user == @user %>
-      You don't have any Pomodoros! <%= link_to "Start working on some Pomodoros", "#", :onclick=>"openTimerPopup()" %> to see the Pomodoro history chart.
+      You don't have any pomodoros! <%= link_to "Start working on some pomodoros", "#", :onclick=>"openTimerPopup()" %> to see the Pomodoro history chart.
     <% end %>
   </div>
 
@@ -121,7 +121,7 @@
 <!--
   <div class="span2 pull-right">
     <% if @user.pomodoros.finished.any? %>
-      <h3>Pomodoros (<%= @user.pomodoros.finished.count %>)</h3>
+      <h3>pomodoros (<%= @user.pomodoros.finished.count %>)</h3>
       <ol class="pomodoros">
         <%= render @pomodoros %>
       </ol>

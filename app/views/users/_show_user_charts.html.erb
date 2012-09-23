@@ -41,7 +41,7 @@ function drawChart(data_toGraph) {
   var data = google.visualization.arrayToDataTable(data_toGraph);
 
   var options = {
-    title: 'Pomodoro history',
+    title: 'pomodoro history',
     chartArea: {top:30, width:"65%",height:"70%"},
     hAxis: {title: 'Date', titleTextStyle: {color: 'red'}},
     height:500
@@ -172,7 +172,7 @@ function getFilteredData(tag) {
 //adds only column of data from second array to first data array
 function addColToDataArray(data_array, data_array_toAdd) {
   if (data_array.length != data_array_toAdd.length) {
-    console.log("ERROR: trying to add a tagged Pomodoro array to master data array of different list.");
+    console.log("ERROR: trying to add a tagged pomodoro array to master data array of different list.");
     console.log(data_array);
     console.log(data_array_toAdd);
     return;

@@ -19,6 +19,7 @@ PomodoroApp::Application.routes.draw do
   match '/pricing', to: 'static_pages#pricing'
   match '/timer', to: 'static_pages#timer'
   match '/getpremium', to: 'static_pages#getpremium'
+  match '/about', to: 'static_pages#about'
 
   
   # The priority is based upon order of creation:
