@@ -25,7 +25,8 @@ class StaticPagesController < ApplicationController
 
 			# set your secret key: remember to change this to your live secret key in production
 			# see your keys here https://manage.stripe.com/account
-			Stripe.api_key = "sk_xzUVMy9CL5PtgS0QseInV6rclgyJL"
+			#Stripe.api_key = "sk_xzUVMy9CL5PtgS0QseInV6rclgyJL" #test private
+			Stripe.api_key = "sk_xxaW2wRSWvzFzg1kJ1IxJLmq2GYcr" #live private
 
 			# get the credit card details submitted by the form
 			token = params[:stripeToken]
@@ -46,8 +47,12 @@ class StaticPagesController < ApplicationController
 			redirect_to root_path
 		end
 	elsif request.get?
-		if current_user.user_level == PREMIUM_LEVEL
-			redirect_to current_user
+		if signed_in?
+			if current_user.user_level == PREMIUM_LEVEL
+				redirect_to current_user
+			end
+		else
+			redirect_to root_path
 		end
 	end
 
